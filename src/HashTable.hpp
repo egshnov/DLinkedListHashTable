@@ -6,10 +6,17 @@
 template<class Key, class T, class Hash = std::hash<Key>>
 class HashTable {
 private:
-    DLinkedList<std::pair<Key, T>> *buckets_maintainer;
+    using node_type = std::pair<Key, T>;
+    DLinkedList<node_type> *buckets_maintainer;
     size_t num_of_buckets;
 public:
-    HashTable(size_t num_of_buckets = 17){
-        buckets_maintainer
+    explicit HashTable(size_t num_of_buckets = 17) {
+        buckets_maintainer = new DLinkedList<node_type>[num_of_buckets];
+    }
+    ~HashTable(){
+        for(int i = 0; i < num_of_buckets; i ++){
+            buckets_maintainer[i].
+        }
+
     }
 };
