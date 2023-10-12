@@ -2,7 +2,7 @@ project(test)
 add_subdirectory(googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-set(SOURCE_FILES DLinkedListTests.cpp)
+set(SOURCE_FILES DLinkedListTests.cpp HashTableTests.cpp)
 set (HEADER_FILE )
 add_executable(Google_Tests_run ${SOURCE_FILES} ${HEADER_FILES})
 

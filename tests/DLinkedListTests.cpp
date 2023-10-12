@@ -5,15 +5,15 @@
 
 //TODO: push_front, insert_after
 
-struct CAParam_int {
+struct IS_Param {
     std::vector<int> vec_inp;
     std::vector<int> indices;
 
-    CAParam_int(std::initializer_list<int> l1 = {}, std::initializer_list<int> l2 = {}) :
+    IS_Param(std::initializer_list<int> l1 = {}, std::initializer_list<int> l2 = {}) :
             vec_inp(l1), indices(l2) {}
 };
 
-class TestCAInt : public ::testing::TestWithParam<CAParam_int> {
+class TestCAInt : public ::testing::TestWithParam<IS_Param> {
 };
 
 
@@ -39,15 +39,15 @@ TEST_P(TestCAInt, Constructor_and_accessors_test_int) {
             l4.push_back(vec_inp[i]);
         }
     }
-    EXPECT_EQ(l1, l4) << l1.to_string() << "\n" << l4.to_string();
+    EXPECT_EQ(l1, l4); //<< l1.to_string() << "\n" << l4.to_string();
 }
 //передавать разные значения в списко иначе тест ломается
 INSTANTIATE_TEST_SUITE_P(ConstAccess, TestCAInt,
-                         testing::Values(CAParam_int({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {1, 2, 2, 3}),
-                                         CAParam_int({100, 124, 12125, 153, 1511, 1315135, 112, 1,
-                                                      -1000, 1224}, {0, 0, 0, 0, 0, 0, 0, 0}),
-                                         CAParam_int({1, 2, 3,}),
-                                         CAParam_int({1, 2, 3, 4, 5, 6, 7, 8}, {1, 2, 3, 4})));
+                         testing::Values(IS_Param({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {1, 2, 2, 3}),
+                                         IS_Param({100, 124, 12125, 153, 1511, 1315135, 112, 1,
+                                                   -1000, 1224}, {0, 0, 0, 0, 0, 0, 0, 0}),
+                                         IS_Param({1, 2, 3,}),
+                                         IS_Param({1, 2, 3, 4, 5, 6, 7, 8}, {1, 2, 3, 4})));
 
 
 struct CAParam_string {
@@ -86,7 +86,7 @@ TEST_P(TestCAString, Constructor_and_accessors_test_int) {
     }
     EXPECT_EQ(l1, l4); //<< l1.to_string() << "\n" << l4.to_string();
 }
-//передавать разные значения в списко иначе тест ломается
+//передавать разные значения в список иначе тест ломается
 INSTANTIATE_TEST_SUITE_P(ConstAccess, TestCAString,
                          testing::Values(CAParam_string({"aavav","adfsaf","favadv","sdvsvdv","savsadva","dvwvwv","wnviv","vwervwvw"}, {1, 2, 2, 3}),
                                          CAParam_string({"A", "B", "C", "D", "E", "F","G", "H",

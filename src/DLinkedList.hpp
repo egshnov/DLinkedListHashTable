@@ -4,24 +4,30 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
+//template<class Key, class T, class Hash> class HashTable;
+//TODO: Подумать есть ли смысл сделать отдельный тип для ноды без значения и отнаследовать ноду списка от неё, сделать sentinel типа базового класса
+//
+template<class Type>
+class DNode {
+public:
+    Type value_;
+    DNode *next_;
+    DNode *prev_;
+
+    explicit DNode(Type const &value = Type(), DNode *prev = nullptr, DNode *next = nullptr) :
+            value_(value), prev_(prev), next_(next) {}
+
+    Type GetValue() {
+        return this->value_;
+    };
+};
+
 template<class T> // head и tail - sentinel nodes
 class DLinkedList {
+    template<class Key, class Type, class Hash> friend
+    class HashTable;
+
 private:
-    template<class Type>
-    class DNode {
-    public:
-        Type value_;
-        DNode *next_;
-        DNode *prev_;
-
-        explicit DNode(T const &value = Type(), DNode *prev = nullptr, DNode *next = nullptr) :
-                value_(value), prev_(prev), next_(next) {}
-
-        Type GetValue() {
-            return this->value_;
-        };
-    };
-
     DNode<T> *head; // перед первой нодой
     DNode<T> *tail; // после последней
 public:
@@ -109,13 +115,9 @@ public:
 
         reference operator*() const { return (ptr_->value_); };
 
-        pointer operator->() { return &(ptr_->value); }
+        pointer operator->() { return &(ptr_->value_); }
 
-//        reference operator*() const { return *ptr_; };
-//
-//        pointer operator->() { return ptr_; }
-
-        DListIterator(DNode<T> *ptr) : ptr_(ptr) {}
+        DListIterator(DNode<T> *ptr) : ptr_(ptr) {} // private ?
 
         DListIterator &operator++() { //prefix
             ptr_ = ptr_->next_;
@@ -159,7 +161,7 @@ public:
         return DListIterator(tail);
     }
 
-    DNode<T> *insert_after_by_pointer(T const &value, DNode<T> *prev_node) {
+    DNode<T> *insert_after_pointer(T const &value, DNode<T> *prev_node) {
         auto target = new DNode<T>(value, prev_node, prev_node->next_);
         prev_node->next_->prev_ = target;
         prev_node->next_ = target;
@@ -167,7 +169,7 @@ public:
     }
 
     DListIterator insert_after(T const &value, DListIterator const &it) {
-        return DListIterator(insert_after_by_pointer(value, it.ptr_));
+        return DListIterator(insert_after_pointer(value, it.ptr_));
     }
 
     DListIterator insert_after(T const &value, size_t ind) {
@@ -196,14 +198,26 @@ public:
         del(it);
     }
 
-    std::string to_string() {
-        std::string s = "";
-        for (auto it = this->begin(); it != this->end(); it++) {
-            s.append(std::to_string(*it) + " ");
-        }
-        return s;
+    bool is_empty() {
+        return this->head->next_ == this->tail;
     }
 
+    DListIterator find(const T &value) {
+        // return std::find(this->begin(),this->end(),value);
+        auto it = this->begin();
+        while (it != this->end()) {
+            if (*it == value) break;
+            ++it;
+        }
+        return it;
+    }
+//    std::string to_string() {
+//        std::string s = "";
+//        for (auto it = this->begin(); it != this->end(); it++) {
+//            s.append(std::to_string(*it) + " ");
+//        }
+//        return s;
+//    }
 };
 
 template<class T>
