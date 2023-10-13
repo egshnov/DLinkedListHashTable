@@ -41,7 +41,7 @@ TEST_P(IS_Param_Test, Constructor_and_accessors_test_int) {
     }
 
 }
-//TODO: resize test, deletion test, custom hash test, проверить можно ли сделать hash table и hash table iterator друзьями без дыры в интерфейсе
+//TODO: resize test, deletion test, custom hash test, проверить можно ли сделать hash table и hash table iterator друзьями без дыры в интерфейсе и чтоб работало
 //TODO: разбить на constructor test, accessors + resize test, custom hash test
 //передавать разные значения ключей в список иначе тест ломается
 INSTANTIATE_TEST_SUITE_P(HashTable, IS_Param_Test,

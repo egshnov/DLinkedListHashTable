@@ -28,7 +28,7 @@ int main() {
         std::unordered_map<int, std::string> map;
         for (int j = 0; j < keys[i].size(); j++) {
             table.insert(keys[i][j], values[i][j]);
-            map[keys[i][j]] = values[i][j];
+            //map[keys[i][j]] = values[i][j];
         }
         for (int j = 0; j < keys[i].size(); j++) {
             if (table.at(keys[i][j]) != values[i][j]) {
@@ -36,10 +36,10 @@ int main() {
                 return 1;
             }
         }
-        auto it = --table.end();
-        while (it != table.begin()) {
-            std::cout << "bucket: " << it.cur_bucket << " key: " << it->key_ << " val: " << it->val_ << std::endl;
-            --it;
+        auto it = table.begin();
+        while (it != table.end()) {
+            std::cout << "key: " << it->key_ << " val: " << it->val_ << std::endl;
+            ++it;
         }
 
 //        auto it = map.begin();

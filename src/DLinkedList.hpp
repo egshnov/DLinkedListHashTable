@@ -7,27 +7,27 @@
 //template<class Key, class T, class Hash> class HashTable;
 //TODO: Подумать есть ли смысл сделать отдельный тип для ноды без значения и отнаследовать ноду списка от неё, сделать sentinel типа базового класса
 //
-template<class Type>
-class DNode {
-public:
-    Type value_;
-    DNode *next_;
-    DNode *prev_;
 
-    explicit DNode(Type const &value = Type(), DNode *prev = nullptr, DNode *next = nullptr) :
-            value_(value), prev_(prev), next_(next) {}
-
-    Type GetValue() {
-        return this->value_;
-    };
-};
 
 template<class T> // head и tail - sentinel nodes
 class DLinkedList {
-    template<class Key, class Type, class Hash> friend
-    class HashTable;
 
 private:
+    template<class Type>
+    class DNode {
+    public:
+        Type value_;
+        DNode *next_;
+        DNode *prev_;
+
+        explicit DNode(Type const &value = Type(), DNode *prev = nullptr, DNode *next = nullptr) :
+                value_(value), prev_(prev), next_(next) {}
+
+        Type GetValue() {
+            return this->value_;
+        };
+    };
+
     DNode<T> *head; // перед первой нодой
     DNode<T> *tail; // после последней
 public:

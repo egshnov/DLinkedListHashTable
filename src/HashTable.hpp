@@ -11,7 +11,7 @@ private:
         Key key_;
         T val_;
 
-        table_pair( Key key = Key(),  T val = T()) : key_(key), val_(val) {}
+        table_pair(const Key &key = Key(), const T &val = T()) : key_(key), val_(val) {}
 
         bool operator==(table_pair const &node) {
             return this->key_ == node.key_;
@@ -102,9 +102,8 @@ public:
 //        if (it != buckets_maintainer[ind].end()) {
 //            return (*it).val_;
 //        }
-//        else{
-//
-//        }
+//        buckets_maintainer[ind].push_front({key, T()});
+//        return (*buckets_maintainer[ind].begin()).val_;
 //
 //    }
 
@@ -134,8 +133,8 @@ public:
         return it != buckets_maintainer[ind].end();
     }
 
-    // сделать приватным?
-    // Чтобы не делать хэшмапу другом двусвязного списка реализован как обёртка вокруг итератора на элемент списка
+// сделать приватным?
+// Чтобы не делать хэшмапу другом двусвязного списка реализован как обёртка вокруг итератора на элемент списка
 
     struct HashTableIterator {
         friend class HashTable;
@@ -152,18 +151,15 @@ public:
 
 
         HashTableIterator &operator++() { //пустые бакеты скипаются
-            //std::cout << "trying to move\n";
             if (ptr_ == buckets_maintainer[cur_bucket].end()) {
                 cur_bucket++;
                 while (buckets_maintainer[cur_bucket].is_empty() && cur_bucket < num_of_buckets - 1) {
-                    //std::cout << "EMPTY\n";
                     cur_bucket++;
                 }
                 ptr_ = buckets_maintainer[cur_bucket].begin();
             } else {
                 ptr_++;
             }
-            //std::cout << "moved\n";
             return *this;
         };
 
@@ -200,8 +196,8 @@ public:
             return this->ptr_ != it.ptr_;
         }
 
-        size_t cur_bucket;
     private:
+        size_t cur_bucket;
         size_t num_of_buckets;
         typename DLinkedList<node_type>::DListIterator ptr_;
         DLinkedList<node_type> *buckets_maintainer;
@@ -214,7 +210,7 @@ public:
     };
 
     HashTableIterator
-    begin() { // первый элемент первого не пустого бакета TODO: подумать стоит ли вынести индекс первого не пустого отдельной переменнной
+    begin() { // первый элемент первого не пустого бакета
         return HashTableIterator(this->buckets_maintainer, ind_of_first_not_empty, this->num_of_buckets_,
                                  buckets_maintainer[ind_of_first_not_empty].begin());
     }
@@ -236,4 +232,5 @@ public:
         this->num_of_buckets_ = new_num_of_buckets;
         this->buckets_maintainer = new_buckets_maintainer;
     }
+
 };
