@@ -1,6 +1,4 @@
-//
-// Created by shalasheg on 07.10.23.
-//
+
 #include "gtest/gtest.h"
 #include "HashTable.hpp"
 #include <vector>
@@ -21,7 +19,6 @@ class IS_Param_Test : public ::testing::TestWithParam<IS_Param> {
 
 
 TEST_P(IS_Param_Test, Constructor_and_accessors_test_int) {
-    using T = int;
     //auto const &[keys, values] = GetParam();
     auto keys = GetParam().keys;
     auto values = GetParam().values;
@@ -82,8 +79,6 @@ class SI_Param_Test : public ::testing::TestWithParam<SI_Param> {
 
 
 TEST_P(SI_Param_Test, Constructor_and_accessors_test_string_key) {
-    using T = std::string;
-
     //auto const &[keys, values] = GetParam();
     auto keys = GetParam().keys;
     auto values = GetParam().values;
@@ -105,7 +100,7 @@ TEST_P(SI_Param_Test, Constructor_and_accessors_test_string_key) {
 }
 //TODO: resize test, deletion test, custom hash test, проверить можно ли сделать hash table и hash table iterator друзьями без дыры в интерфейсе
 //TODO: разбить на constructor test, accessors + resize test, custom hash test
-//передавать разные значения ключей в список иначе тест ломается
+//передавать разные значения ключей иначе тест ломается
 INSTANTIATE_TEST_SUITE_P(HashTable, SI_Param_Test,
                          testing::Values(SI_Param({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
                                                   {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}

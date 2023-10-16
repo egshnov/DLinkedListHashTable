@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include "DLinkedList.hpp"
 
-//TODO: operator[]
-template<class Key, class T, class Hash = std::hash<Key>>
+//TODO: operator[] - ?
+template<class Key, class T, class Hash = std::hash<Key>> //hash полем как функтор?
 class HashTable {
 private:
     struct table_pair {
@@ -82,7 +82,7 @@ public:
         return *this;
     }
 
-    void insert(const Key &key, const T &value) { // если в таблице уже есть такой ключ то изменяем значение в нём.
+    void insert(const Key &key, const T &value) { // если в таблице уже есть такой ключ то изменяем значение
         size_t ind = get_ind(key);
         if (ind < ind_of_first_not_empty) {
             ind_of_first_not_empty = ind;
@@ -124,6 +124,12 @@ public:
         if (it != buckets_maintainer[ind].end()) {
             buckets_maintainer[ind].del(it);
         }
+        if (ind_of_first_not_empty == ind && buckets_maintainer[ind].is_empty()) {
+            while (ind_of_first_not_empty < this->num_of_buckets_ &&
+                   buckets_maintainer[ind_of_first_not_empty].is_empty()) {
+                ++ind_of_first_not_empty;
+            }
+        }
     }
 
     bool contains(const Key &key) {
@@ -135,9 +141,8 @@ public:
 
 // сделать приватным?
 // Чтобы не делать хэшмапу другом двусвязного списка реализован как обёртка вокруг итератора на элемент списка
-
     struct HashTableIterator {
-        friend class HashTable;
+        friend class HashTable; // чтобы можно было сделать конструктор итератора приватным
 
         using iterator_category = std::bidirectional_iterator_tag;
         using difference_type = std::ptrdiff_t;
@@ -209,15 +214,14 @@ public:
 
     };
 
-    HashTableIterator
-    begin() { // первый элемент первого не пустого бакета
+    HashTableIterator begin() { // первый элемент первого не пустого бакета
         return HashTableIterator(this->buckets_maintainer, ind_of_first_not_empty, this->num_of_buckets_,
-                                 buckets_maintainer[ind_of_first_not_empty].begin());
+                                 this->buckets_maintainer[ind_of_first_not_empty].begin());
     }
 
     HashTableIterator end() {
         return HashTableIterator(this->buckets_maintainer, this->num_of_buckets_ - 1, this->num_of_buckets_,
-                                 buckets_maintainer[num_of_buckets_ - 1].end());
+                                 this->buckets_maintainer[num_of_buckets_ - 1].end());
     }
 
     void resize(size_t new_num_of_buckets) {
